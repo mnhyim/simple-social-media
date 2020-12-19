@@ -16,10 +16,21 @@
                 Dashboard
             </header>
 
-            <div class="w-full p-6">
-                <p class="text-gray-700">
+            <div class="w-full p-6 flex">
+                {{-- <p class="text-gray-700">
                     You are logged in!
-                </p>
+                </p> --}}
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
+
+                <form class="mt-10 mx-auto w-8/12" action="{{ route('home.store') }}" method="post">
+                    @csrf
+                    <input class="form-input rounded-none w-3/4" type="text" name="posts" id="name">
+                    <button class="p-3.5 bg-blue-700 text-white w-2/12" type="submit">Post</button>
+                </form>
             </div>
         </section>
     </div>
