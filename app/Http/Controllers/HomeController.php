@@ -5,27 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Post;
 use Auth;
+use Redirect;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('home.index');
+        $posts = Post::latest()->paginate(5);
+        return view('home.index',compact('posts'));
     }
     
     public function store(Request $request) 
@@ -35,6 +27,14 @@ class HomeController extends Controller
             'posts' => request('posts'),
             'poster_id' => $id
         ]);
-        return view('home.index');
+
+        $posts = Post::latest()->paginate(5);
+        return back();
+    }
+
+    public function destroy($id)
+    {
+        Post::find($id)->delete();
+        return back();
     }
 }
